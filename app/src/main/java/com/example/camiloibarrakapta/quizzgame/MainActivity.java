@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -106,6 +107,10 @@ public class MainActivity extends AppCompatActivity {
         answerBtn2.setText(quiz.get(1));
         answerBtn3.setText(quiz.get(2));
         answerBtn4.setText(quiz.get(3));
+
+        //Recibe quiz category
+        int quizCategory = getIntent().getIntExtra("QUIZ_CATEGORY", 0);
+        Log.v("CATEGORY_TAG", quizCategory + "");
 
         //Borrar este quiz de la lista
         quizArray.remove(randomNum);
