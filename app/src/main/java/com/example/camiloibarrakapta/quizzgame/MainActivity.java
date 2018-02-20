@@ -1,13 +1,20 @@
 package com.example.camiloibarrakapta.quizzgame;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private String rightAnswer;
     private int rightAnswerCount = 0;
     private int quizCount = 1;
+    static final private int QUIZ_COUNT = 15;
 
     ArrayList<ArrayList<String>> quizArray = new ArrayList<>();
 
@@ -38,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
             {"France", "Paris", "Ottawa", "Copenhagen", "Tokyo"},
             {"Germany", "Berlin", "Copenhagen", "Bangkok", "Santiago"},
             {"Italy", "Rome", "London", "Paris", "Athens"},
-            {"Spain", "Madrid", "Mexico City", "Jakarta", "Havana"}
+            {"Spain", "Madrid", "Mexico City", "Jakarta", "Havana"},
+            {"Colombia", "Bogota", "cali", "Medellin", "Popayán"}
     };
 
 
@@ -71,6 +80,67 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showNextQuiz(){
-        minuto 4:31 https://www.youtube.com/watch?v=aUQ9ciMDPSE&list=PLRdMAPi4QUfbEk4NfsImoUMudvxBI0bov&index=3
+        countLabel.setText("Kapta Question " + quizCount);
+
+        //Generar un numero entre 0 y 14
+        Random random = new Random();
+        int randomNum = random.nextInt(quizArray.size());
+
+        //Seleccionar un quiz
+        ArrayList<String> quiz = quizArray.get(randomNum);
+
+        //Setear la pregunta y la respuesta correcta
+        //Array format {"Colombia", "Right answer", "Choice1", "Choice2", "Choice3"}
+        questionLabel.setText(quiz.get(0));
+        rightAnswer = quiz.get(1);
+
+        //Borrar "Country" del quiz y
+        quiz.remove(0);
+        Collections.shuffle(quiz);
+
+        //Setear opciones
+        answerBtn1.setText(quiz.get(0));
+        answerBtn2.setText(quiz.get(1));
+        answerBtn3.setText(quiz.get(2));
+        answerBtn4.setText(quiz.get(3));
+
+        //Borrar este quiz de la lista
+        quizArray.remove(randomNum);
+
+    }
+
+    public void checkAnswer(View view){
+        //Capturar el boton presionado
+        Button answerBtn = (Button) findViewById(view.getId());
+        String btnText = answerBtn.getText().toString();
+
+        String alertTitle;
+
+        if(btnText.equals(rightAnswer)){
+            //Correcto
+            alertTitle = "Correcto!";
+            rightAnswerCount ++;
+        }else{
+            //Incorrecto
+            alertTitle = "Incorrecto!";
+        }
+
+        //Crear dialogo
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(alertTitle);
+        builder.setMessage("Answer: " + rightAnswer);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(quizCount == QUIZ_COUNT){
+                    //Mostrar resultado
+                }else{
+                    quizCount++;
+                    showNextQuiz();
+                }
+            }
+        });
+        builder.setCancelable(false);
+        builder.show();
     }
 }
