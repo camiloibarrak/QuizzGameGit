@@ -1,6 +1,7 @@
 package com.example.camiloibarrakapta.quizzgame;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 
+import javax.xml.transform.Result;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView countLabel;
@@ -28,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private String rightAnswer;
     private int rightAnswerCount = 0;
     private int quizCount = 1;
-    static final private int QUIZ_COUNT = 15;
+    static final private int QUIZ_COUNT = 5;
 
     ArrayList<ArrayList<String>> quizArray = new ArrayList<>();
 
@@ -134,6 +137,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 if(quizCount == QUIZ_COUNT){
                     //Mostrar resultado
+                    Intent intent = new Intent(getApplicationContext(), ResultActivity.class);
+                    intent.putExtra("RIGTH ANSWER COUNT", rightAnswerCount);
+                    startActivity(intent);
                 }else{
                     quizCount++;
                     showNextQuiz();
